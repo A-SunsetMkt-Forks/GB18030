@@ -7,3 +7,7 @@ GB18030-2022MappingTableSMP.txt
 GB18030-2022与UCS代码映射表
 版权方：不明 应同国家标准
 来源：全国信息技术标准化网(http://www.nits.org.cn/)
+
+GB18030编码研究以及GBK、GB18030与Unicode的映射.html
+版权方：lionzl(https://blog.csdn.net/lionzl)
+来源：CSDN博客(https://blog.csdn.net/lionzl/article/details/8043050)
