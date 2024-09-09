@@ -124,6 +124,8 @@ void testGbStringBytes()
 	printGbBytes(s);
 	cout << "\n";
 
+	string bytes = s.toBytes();
+
 	TEST_END
 }
 
@@ -148,7 +150,42 @@ void testGbStringFromLiteral()
 
 void example()
 {
+	// Unicode转GB18030
+	GbString s = GbString::fromUnicode(U"中国中文");
+	
+	// 获取字符串长度
+	cout << "GB string length: " << dec << s.length() << "\n";
 
+	// 获取GB18030字符
+	cout << "GB string[0] bytes: ";
+	for (size_t i = 0; i < s[0].size(); ++i)
+		cout << hex << (int)s[0].toBytes()[i];
+	cout << "\n";
+
+	// 获取对应Unicode字符值
+	cout << "GB string[0] to Unicode: " << hex << s[0].toUnicode() << "\n";
+
+	// 修改字符串
+	s[2] = 0xBABA;  //汉
+	s[3] = GbChar::fromUnicode(U'字');
+
+	// 遍历GB18030字符
+	cout << "GB string sizes: ";
+	for (auto c : s)
+		cout << dec << c.size() << " ";
+	cout << "\n";
+
+	// GB18030转Unicode
+	u32string u32 = s.toUnicode();
+	cout << "GB string to Unicode string length: " << u32.length() << " bytes: ";
+	for (auto u : u32)
+		cout << hex << u << " ";
+	cout << "\n";
+
+	// GB18030转字节流
+	string bytes = s.toBytes();
+	for (auto b : bytes)
+		printf("%02x ", (unsigned char)b);
 }
 
 int main()
@@ -162,5 +199,8 @@ int main()
 	testGbStringUnicode();
 	testGbStringBytes();
 	testGbStringFromLiteral();
+
+	cout << "Example output:";
+	example();
 	return 0;
 }
