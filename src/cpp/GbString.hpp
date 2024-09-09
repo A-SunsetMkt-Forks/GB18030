@@ -47,6 +47,15 @@ namespace gb18030
 			// 转换到Unicode字符
 			char32_t toUnicode() const noexcept;
 
+			// 从字符串字面量获取字符
+			//
+			// 如 "\xBA\xBA"
+			template <size_t N>
+			static GbChar fromBytes(const char(&literal)[N]) noexcept
+			{
+				return fromBytes(literal, N-1);
+			}
+
 			// 从字节流获取字符
 			//
 			// 仅获取第一个字符
@@ -214,11 +223,29 @@ namespace gb18030
 				return data_.rend();
 			}
 
+			// 从Unicode字符串字面量获取GB18030字符串
+			//
+			// 如 U"中国中文汉字"
+			template <size_t N>
+			static GbString fromUnicode(const char32_t(&literal)[N])
+			{
+				return fromUnicode(literal, N-1);
+			}
+
 			// 从Unicode字符串获取GB18030字符串
 			static GbString fromUnicode(const char32_t* data, size_t len);
 
 			// 转换到Unicode字符串
 			std::u32string toUnicode() const;
+
+			// 从字符串字面量获取GB18030字符串
+			//
+			// 如 "\xd6\xd0\xb9\xfa\xd6\xd0\xce\xc4\xba\xba\xd7\xd6"
+			template <size_t N>
+			static GbString fromBytes(const char(&literal)[N])
+			{
+				return fromBytes(literal, N-1);
+			}
 
 			// 从字节流获取GB18030字符串
 			static GbString fromBytes(const char* data, size_t len);
