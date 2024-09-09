@@ -112,6 +112,20 @@ namespace gb18030
 				return data_.size();
 			}
 
+			// 申请指定大小空间
+			void reserve(size_t len)
+			{
+				data_.reserve(len);
+			}
+
+			// 放入字符
+			//
+			// 满足STL容器接口
+			void push_back(GbChar c)
+			{
+				data_.push_back(c);
+			}
+
 			// 获取指定位置字符
 			reference at(size_type index)
 			{
@@ -134,6 +148,70 @@ namespace gb18030
 			const_reference operator[](size_type index) const noexcept
 			{
 				return data_[index];
+			}
+
+			// 起始迭代器
+			//
+			// 满足STL容器接口
+			iterator begin() noexcept
+			{
+				return data_.begin();
+			}
+
+			// 终止迭代器
+			//
+			// 满足STL容器接口
+			iterator end() noexcept
+			{
+				return data_.end();
+			}
+
+			// 只读起始迭代器
+			//
+			// 满足STL容器接口
+			const_iterator begin() const noexcept
+			{
+				return data_.begin();
+			}
+
+			// 只读终止迭代器
+			//
+			// 满足STL容器接口
+			const_iterator end() const noexcept
+			{
+				return data_.end();
+			}
+
+			// 反向起始迭代器
+			//
+			// 满足STL容器接口
+			reverse_iterator rbegin() noexcept
+			{
+				return data_.rbegin();
+			}
+
+			// 反向结束迭代器
+			//
+			// 满足STL容器接口
+			reverse_iterator rend() noexcept
+			{
+				return data_.rend();
+			}
+
+			// 只读反向起始迭代器
+			//
+			// 满足STL容器接口
+			const_reverse_iterator rbegin() const noexcept
+			{
+				return data_.rbegin();
+			}
+
+			// 只读反向结束迭代器
+			//
+			// 满足STL容器接口
+			const_reverse_iterator rend() const noexcept
+			{
+				return data_.rend();
 			}
 
 			// 从Unicode字符串获取GB18030字符串

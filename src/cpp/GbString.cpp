@@ -127,5 +127,74 @@ namespace gb18030
 		{
 			return internal::getCharBytes(char_);
 		}
+
+		GbString GbString::fromUnicode(const char32_t* data, size_t len)
+		{
+			GbString s;
+			s.reserve(len);
+
+			for (size_t i = 0; i < len; ++i)
+			{
+				auto ch = GbChar::fromUnicode(data[i]);
+				if (ch.isNul())
+					break;
+
+				s.push_back(ch);
+			}
+
+			return s;
+		}
+
+		std::u32string GbString::toUnicode() const
+		{
+			if (length())
+			{
+				std::u32string s;
+				s.reserve(length());
+
+				for (auto ch : *this)
+					s.push_back(ch.toUnicode());
+			}
+			return {};
+		}
+
+		GbString GbString::fromBytes(const char* data, size_t len)
+		{
+			GbString s;
+			s.reserve(len / 2);
+
+			while (len)
+			{
+				auto ch = GbChar::fromBytes(data, len);
+				if (ch.isNul())
+					break;
+
+				s.push_back(ch);
+
+				auto sz = ch.size();
+				data += sz;
+				len -= sz;
+			}
+
+			return s;
+		}
+
+		std::string GbString::toBytes() const
+		{
+			if (length())
+			{
+				std::string s;
+				s.reserve(length() * 2);
+
+				for (auto ch : *this)
+				{
+					auto bytes = ch.toBytes();
+					s.append((const char*)bytes.data(), ch.size());
+				}
+
+				return s;
+			}
+			return {};
+		}
 	}
 }
