@@ -76,10 +76,23 @@ namespace gb18030
 			{
 				if (c <= 0x7F)  //单字节区 等同
 					return (uint32_t)c;
-				else if (c <= 0xFFFF)  //双字节区 BMP
+
+				if (c <= 0xFFFF)  //双字节区 BMP
 					return ucsToGbBmp[c];
-				else if (c <= 0x10FFFF)  //四字节区 SMP
-					return c;  //TODO: implement
+
+				if (c <= 0x10FFFF)  //四字节区 SMP
+				{
+					uint32_t u = c - 65536;
+					uint32_t n1 = u % 12600;
+					uint32_t m1 = u / 12600;
+					uint32_t m2 = n1 / 1260;
+					uint32_t n2 = n1 % 1260;
+					uint32_t m3 = n2 / 10;
+					uint32_t n3 = n2 % 10;
+
+					CharBytes bytes{ 0x90+m1, 0x30+m2, 0x81+m3, 0x30+n3 };
+					return fromCharBytes(bytes.data(), bytes.size());
+				}
 
 				return 0;  //非法字符
 			}
@@ -87,15 +100,33 @@ namespace gb18030
 			inline char32_t gbToUnicode(uint32_t c) noexcept
 			{
 				auto size = getGbCharSize(c);
-				if (size == 1)
+				if (size == 1)  //单字节区 等同
 					return (char32_t)c;
 
-				if (size == 2)
+				if (size == 2)  //双字节区 BMP
 					return gbToUcsBmp[c];
 
-				if (size == 4)
+				if (size == 4)  //四字节区
 				{
-					//TODO: implement
+					auto bytes = getCharBytes(c);
+					if (0x81 <= bytes[0] && bytes[0] <= 0x84 &&
+						0x30 <= bytes[1] && bytes[1] <= 0x39 &&
+						0x81 <= bytes[2] && bytes[2] <= 0xFE &&
+						0x30 <= bytes[3] && bytes[3] <= 0x39)
+					{
+						//BMP-EXT
+						auto index = getCharBytes(c % 0x30813081);
+						return gbToUcsBmpExt[index[0]][index[1]][index[2]][index[3]];
+					}
+
+					//SMP
+					uint32_t m1 = bytes[0]-0x90;
+					uint32_t m2 = bytes[1]-0x30;
+					uint32_t m3 = bytes[2]-0x81;
+					uint32_t n3 = bytes[3]-0x30;
+					
+					uint32_t u = m1 * 12600 + m2 * 1260 + m3 * 10 + n3 + 65536;
+					return u;
 				}
 
 				return 0;  //非法字符
