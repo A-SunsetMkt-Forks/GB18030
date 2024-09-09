@@ -6,8 +6,8 @@ namespace gb18030
 	{
 		namespace internal
 		{
-			extern uint32_t ucsToGbBmp[65535];
-			extern char32_t gbToUcsBmp[65535];
+			extern uint32_t ucsToGbBmp[65536];
+			extern char32_t gbToUcsBmp[65536];
 			extern char32_t gbToUcsBmpExt[4][10][126][11];
 
 			using CharBytes = std::array<uint8_t, 4>;
