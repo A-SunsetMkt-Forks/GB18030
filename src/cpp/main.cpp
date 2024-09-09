@@ -35,6 +35,27 @@ void testGbCharUnicode()
 	TEST_END
 }
 
+void testGbCharBmpSmp()
+{
+	TEST_BEG
+
+	char32_t u1 = 0x0250;
+	GbChar c1 = GbChar::fromUnicode(u1);  //BMP-ext
+	cout << "Unicode(0x250) to GB18030 size: " << dec << c1.size() << " bytes: ";
+	for (size_t i = 0; i < c1.size(); ++i)
+		cout << hex << (int)c1.toBytes()[i];
+
+	cout << "\n";
+
+	char32_t u2 = 0x10011;
+	GbChar c2 = GbChar::fromUnicode(u2);  //SMP
+	cout << "Unicode(0x10011) to GB18030 size: " << dec << c2.size() << " bytes: ";
+	for (size_t i = 0; i < c2.size(); ++i)
+		cout << hex << (int)c2.toBytes()[i];
+
+	TEST_END;
+}
+
 void testGbStringBasic()
 {
 	TEST_BEG
@@ -104,6 +125,7 @@ int main()
 {
 	testGbCharBytes();
 	testGbCharUnicode();
+	testGbCharBmpSmp();
 	testGbStringBasic();
 	testGbStringUnicode();
 	testGbStringBytes();
