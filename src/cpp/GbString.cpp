@@ -185,6 +185,8 @@ namespace gb18030
 
 				for (auto ch : *this)
 					s.push_back(ch.toUnicode());
+
+				return s;
 			}
 			return {};
 		}
