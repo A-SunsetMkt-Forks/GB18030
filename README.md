@@ -15,8 +15,8 @@ C++语言：
 
 int main()
 {
-    using namespace std;
-    using namespace gb18030::v2022;
+	using namespace std;
+	using namespace gb18030::v2022;
 
     // Unicode转GB18030
 	GbString s = GbString::fromUnicode(U"中国中文");
