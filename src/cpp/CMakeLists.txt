@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(PROJECT_SOURCES
     GbString.hpp
     GbString.cpp
-    GbMapping.cpp
     main.cpp
 )
 
